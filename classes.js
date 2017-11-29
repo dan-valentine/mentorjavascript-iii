@@ -1,6 +1,5 @@
 
 // Classes
-
 /*
 Classes are a tool for building similar objects over and over again.
 They are a construct that helps your organize your code.
@@ -21,7 +20,19 @@ Each employee can:
 
 call your class Employee and receive all the data in the constructor in the order listed
 */
+class Employee {
 
+    constructor(first_name, last_name, email, age) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.email = email;
+        this.age = age;
+    }
+
+    makeWidget() {
+        return `${this.first_name} ${this.last_name} Widget`
+    }
+}
 
 
 /*
@@ -40,6 +51,21 @@ They can (methods) :
 call your class Manager
 
 */
+
+class Manager extends Employee {
+    constructor(first_name, last_name, email, age) {
+        super(first_name, last_name, email, age);
+        this.reports = [];
+    }
+
+    hire(employee) {
+        this.reports.push(employee)
+    }
+
+    fire(index) {
+        this.reports.splice(index, 1);
+    }
+}
 
 
 
@@ -65,7 +91,66 @@ Everytime they fire an employee they get $100 added to their bonus.
 call your class ProgressiveManager
 */
 
+class ProgressiveManager extends Manager {
+    constructor(first_name, last_name, email, age) {
+        super(first_name, last_name, email, age);
+        this.title = 'Not a manager';
+        this.bonus = 0;
+    }
 
+    hire(employee) {
+        this.reports.push(employee)
+        var x = this.reports.length;
+        switch (true) {
+            case (x == 0):
+                this.title = 'Bestest Manager';
+                break;
+            case (x < 4):
+                this.title = 'Barely Manager';
+                break;
+            case (x < 11):
+                this.title = 'Mostly Manager';
+                break;
+            case (x < 50):
+                this.title = 'Manager';
+                break;
+            case (x < 101):
+                this.title = 'Manager Plus';
+                break;
+
+            default:
+                this.title = 'Bestest Manager';
+                break;
+        }
+    }
+
+    fire(index) {
+        this.reports.splice(index, 1);
+        this.bonus += 100;
+        var x = this.reports.length;
+        switch (true) {
+            case (x == 0):
+                this.title = 'Bestest Manager';
+                break;
+            case (x < 4):
+                this.title = 'Barely Manager';
+                break;
+            case (x < 11):
+                this.title = 'Mostly Manager';
+                break;
+            case (x < 50):
+                this.title = 'Manager';
+                break;
+            case (x < 101):
+                this.title = 'Manager Plus';
+                break;
+
+            default:
+                this.title = 'Bestest Manager';
+                break;
+        }
+    }
+}
 
 
 /*
@@ -90,3 +175,23 @@ It can :
       It should set decrease wear_and_tear_count by 10, and set needs_reboot to false
 
 */
+class Machine {
+    constructor() {
+        this.widgets_made_count = 0;
+        this.wear_and_tear_count = 0;
+        this.needs_reboot = false;
+    }
+    makeWidgets(num) {
+        this.widgets_made_count += num;
+        this.wear_and_tear_count += Math.floor(num/50)
+    }
+    fixMachine() {
+        this.needs_reboot = true;
+    }
+    reboot() {
+        return () => {
+            this.wear_and_tear_count -= 10;
+            this.needs_reboot = false
+        }
+    }
+}
